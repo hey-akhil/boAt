@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+
+  </style>
+</head>
+
+<body>
+
+<div class="container-fluid my-5">
+
+  <!-- Header -->
+  <div class="blog-section-header mb-4">
+    <h4 class="mb-0">Popular <strong>Blo<span class="red-underline">gs</span></strong></h4>
+    <div class="d-flex align-items-center">
+      <h5 class="mb-0"><strong>View All</strong></h5>
+      <span class="ms-2 text-dark">
+        <i class="fa-solid fa-arrow-right fa-lg"></i>
+      </span>
+    </div>
+  </div>
+
+  <!-- Blog Cards -->
+  <div class="row g-3">
+
+    <!-- Card 1 -->
+    <div class="col-md-3 col-sm-6">
+      <div class="blog-card">
+        <img src="{% static 'images/blog_earbuds.webp' %}" alt="Blog" class="blog-image">
+        <div class="p-3">
+          <div class="blog-meta">21 Mar, 2024</div>
+          <div class="blog-title">Gaming Earbuds for Travel: Compact and Portable Gaming...</div>
+          <div class="blog-desc">When nothing can stop a gamer from entering the arena, we’ve got gaming...</div>
+          <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right fa-sm"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-md-3 col-sm-6">
+      <div class="blog-card">
+        <img src="{% static 'images/blog_watchface.webp' %}" alt="Blog" class="blog-image">
+        <div class="p-3">
+          <div class="blog-meta">08 Mar, 2024</div>
+          <div class="blog-title">How To Create Watch Faces Using The Watch Face Studio</div>
+          <div class="blog-desc">Why stick to a few watch faces on your smartwatch when you can design many? Check out...</div>
+          <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right fa-sm"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-md-3 col-sm-6">
+      <div class="blog-card">
+        <img src="{% static 'images/blog_anc.webp' %}" alt="Blog" class="blog-image">
+        <div class="p-3">
+          <div class="blog-meta">13 Mar, 2024</div>
+          <div class="blog-title">ANC for Work: How Noise-Cancelling Headphones Can Boost Productivity</div>
+          <div class="blog-desc">Noise at the workplace can become annoying. Don't worry, we’ve got ANC...</div>
+          <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right fa-sm"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col-md-3 col-sm-6">
+      <div class="blog-card">
+        <img src="{% static 'images/blog_rakhi.webp' %}" alt="Blog" class="blog-image">
+        <div class="p-3">
+          <div class="blog-meta">25 Jul, 2025</div>
+          <div class="blog-title">Celebrate Raksha Bandhan with These Top 5 Smartwatch Gifts for Brothers</div>
+          <div class="blog-desc">Forget boring socks. This Rakhi, gift your brother a smartwatch that stands out...</div>
+          <a href="#" class="read-more">Read More <i class="fa-solid fa-arrow-right fa-sm"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Press Section -->
+  <div class="mt-5">
+    <h4 class="mb-3">In the <span class="red-underline fw-bold">Press</span></h4>
+    <div class="in-press">
+      <h4>Business Standard</h4>
+      <div class="quote mt-3">
+        “Audio brand boAt scales up to Rs 4,000 crore in net sales for FY 2022-23”
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

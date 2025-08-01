@@ -12,161 +12,150 @@
   .carousel-indicators .active {
     opacity: 1;
   }
-
   .blow-banner-tnc img {
     height: 45px !important;
     object-fit: cover;
     width: 100%;
   }
-
   .myIconRow {
     align-items: center;
-
   }
-
   .myText {
     text-align: left;
     font-size: 14px;
     line-height: 1.2;
   }
-
   .myText b {
     font-weight: 600;
   }
-
   .myIcon img {
     display: block;
     margin: auto;
   }
-
   .info-icon {
     margin-left: 4px;
     vertical-align: middle;
   }
-
   @media (max-width: 767.98px) {
     .myIconRow {
       gap: 0.25rem;
     }
-
     .myText {
       font-size: 13px;
     }
   }
 </style>
 
-<div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" data-bs-wrap="true">
+<div class="container-fluid">
 
-  <!-- Dot Indicators -->
-  <div class="carousel-indicators">
-    {% for i in "123456"|make_list %}
-      <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
-              {% if forloop.first %}class="active" aria-current="true"{% endif %}
-              aria-label="Slide {{ forloop.counter }}"></button>
-    {% endfor %}
-  </div>
-
-  <!-- Carousel Slides -->
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{% static 'images/1.webp' %}" class="d-block w-100" alt="Slide 1">
+  <!-- Carousel -->
+  <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000" data-bs-wrap="true">
+    <!-- Dot Indicators -->
+    <div class="carousel-indicators">
+      {% for i in "123456"|make_list %}
+        <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+                {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
     </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/2.webp' %}" class="d-block w-100" alt="Slide 2">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/3.webp' %}" class="d-block w-100" alt="Slide 3">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/4.webp' %}" class="d-block w-100" alt="Slide 4">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/5.webp' %}" class="d-block w-100" alt="Slide 5">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/6.webp' %}" class="d-block w-100" alt="Slide 6">
-    </div>
-  </div>
-</div>
 
-<div class="blow-banner-tnc w-100">
-  <img src="{% static 'images/blow_slider_tnc.webp' %}" alt="" class="img-fluid w-100">
-</div>
-
-
-
-
-<div class="c-new">
-  <div class="section__color-wrapper promise-icons">
-    <div class="mySect py-2">
-      <div class="img-row text-center row justify-content-between gx-2 mx-auto" style="max-width: 100%;">
-
-        <!-- Warranty -->
-        <div class="col-6 col-md-3 pipe p-0">
-          <div class="row myIconRow">
-            <div class="col-4 myIcon">
-              <img alt="Warranty Icon" loading="lazy"
-                   src="//www.boat-lifestyle.com/cdn/shop/files/jshf_2-01-final-01_small.svg?v=1744365804"
-                   width="48" height="48">
-            </div>
-            <div class="col-8 myText">
-              <b>12+3 Months</b><br>
-              Warranty
-              <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                   viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="30" stroke="#000" stroke-width="3" fill="none"></circle>
-                <text x="50" y="68" text-anchor="middle" font-size="50" fill="#000">i</text>
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <!-- GST Billing -->
-        <div class="col-6 col-md-3 pipe p-0">
-          <div class="row myIconRow">
-            <div class="col-4 myIcon">
-              <img alt="GST Billing Icon" loading="lazy"
-                   src="//www.boat-lifestyle.com/cdn/shop/files/Group_334302_small.svg?v=1682336123"
-                   width="48" height="48">
-            </div>
-            <div class="col-8 myText">
-              <b>GST</b><br>Billing
-            </div>
-          </div>
-        </div>
-
-        <!-- Free Express Delivery -->
-        <div class="col-6 col-md-3 pipe p-0">
-          <div class="row myIconRow">
-            <div class="col-4 myIcon">
-              <img alt="Delivery Icon" loading="lazy"
-                   src="//www.boat-lifestyle.com/cdn/shop/files/Group_334303_small.svg?v=1682336123"
-                   width="48" height="48">
-            </div>
-            <div class="col-8 myText">
-              <b>Free Express</b><br>Delivery*
-            </div>
-          </div>
-        </div>
-
-        <!-- 7-day Replacement -->
-        <div class="col-6 col-md-3 pipe p-0">
-          <div class="row myIconRow">
-            <div class="col-4 myIcon">
-              <img alt="Replacement Icon" loading="lazy"
-                   src="//www.boat-lifestyle.com/cdn/shop/files/Group_334304_small.svg?v=1682336123"
-                   width="48" height="48">
-            </div>
-            <div class="col-8 myText">
-              <b>7-day</b><br>Replacement
-            </div>
-          </div>
-        </div>
-
+    <!-- Carousel Slides -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{% static 'images/1.webp' %}" class="d-block w-100" alt="Slide 1">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/2.webp' %}" class="d-block w-100" alt="Slide 2">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/3.webp' %}" class="d-block w-100" alt="Slide 3">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/4.webp' %}" class="d-block w-100" alt="Slide 4">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/5.webp' %}" class="d-block w-100" alt="Slide 5">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static 'images/6.webp' %}" class="d-block w-100" alt="Slide 6">
       </div>
     </div>
   </div>
-</div>
 
+  <!-- T&C Banner -->
+  <div class="blow-banner-tnc w-100">
+    <img src="{% static 'images/blow_slider_tnc.webp' %}" alt="" class="img-fluid w-100">
+  </div>
+
+  <!-- Icons Section -->
+  <div class="py-2">
+    <div class="row text-center justify-content-between gx-2 mx-auto" style="max-width: 100%;">
+
+      <!-- Warranty -->
+      <div class="col-6 col-md-3 p-0">
+        <div class="row myIconRow">
+          <div class="col-4 myIcon">
+            <img alt="Warranty Icon" loading="lazy"
+                 src="//www.boat-lifestyle.com/cdn/shop/files/jshf_2-01-final-01_small.svg?v=1744365804"
+                 width="48" height="48">
+          </div>
+          <div class="col-8 myText">
+            <b>12+3 Months</b><br>
+            Warranty
+            <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                 viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="30" stroke="#000" stroke-width="3" fill="none"></circle>
+              <text x="50" y="68" text-anchor="middle" font-size="50" fill="#000">i</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- GST Billing -->
+      <div class="col-6 col-md-3 p-0">
+        <div class="row myIconRow">
+          <div class="col-4 myIcon">
+            <img alt="GST Billing Icon" loading="lazy"
+                 src="//www.boat-lifestyle.com/cdn/shop/files/Group_334302_small.svg?v=1682336123"
+                 width="48" height="48">
+          </div>
+          <div class="col-8 myText">
+            <b>GST</b><br>Billing
+          </div>
+        </div>
+      </div>
+
+      <!-- Free Express Delivery -->
+      <div class="col-6 col-md-3 p-0">
+        <div class="row myIconRow">
+          <div class="col-4 myIcon">
+            <img alt="Delivery Icon" loading="lazy"
+                 src="//www.boat-lifestyle.com/cdn/shop/files/Group_334303_small.svg?v=1682336123"
+                 width="48" height="48">
+          </div>
+          <div class="col-8 myText">
+            <b>Free Express</b><br>Delivery*
+          </div>
+        </div>
+      </div>
+
+      <!-- 7-day Replacement -->
+      <div class="col-6 col-md-3 p-0">
+        <div class="row myIconRow">
+          <div class="col-4 myIcon">
+            <img alt="Replacement Icon" loading="lazy"
+                 src="//www.boat-lifestyle.com/cdn/shop/files/Group_334304_small.svg?v=1682336123"
+                 width="48" height="48">
+          </div>
+          <div class="col-8 myText">
+            <b>7-day</b><br>Replacement
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
 {% endblock %}

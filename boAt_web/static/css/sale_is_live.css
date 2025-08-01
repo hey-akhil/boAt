@@ -1,0 +1,131 @@
+  body {
+    background-color: #f8f9fa;
+  }
+  .product-card {
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+  }
+  .product-card:hover {
+    transform: scale(1.02);
+  }
+  .product-image {
+    width: 100%;
+    height: 190px;
+    overflow: hidden;
+  }
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid #eee;
+  }
+  .badge-custom {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #000;
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .playback-badge {
+    background-color: #ffd700;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+  .rating {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-left: 5px;
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .price {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  .old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+    margin-left: 5px;
+  }
+  .discount {
+    color: green;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  .below {
+    min-height: 200px !important;
+  }
+  .WholeBox {
+    min-width: 200px !important;
+  }
+  .nirvana {
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  display: block;
+  }
+  .red-underline {
+    text-decoration: underline;
+    text-decoration-color: red;
+  }
+  .category-tabs .tab-button {
+    background-color: transparent;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    color: #6c757d;
+    transition: all 0.2s ease;
+  }
+
+  .category-tabs .tab-button:hover {
+    color: #000;
+    background-color: #f1f1f1;
+  }
+
+  .category-tabs .tab-button.active {
+    background-color: #e8ecef;
+    color: #000;
+    font-weight: 600;
+  }
+  .video-box-card {
+  border: 1px solid #ddd;               /* light grey border */
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);  /* soft shadow */
+  transition: transform 0.3s ease;
+  background-color: #fff;
+}
+
+/* Shared styles for both <img> and <video> */
+.video-box-card img,
+.video-box-card video {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  border-radius: 0; /* Already rounded by the container */
+  display: block;
+}
+
+/* Zoom effect on hover */
+.video-box-card:hover img,
+.video-box-card:hover video {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* Optional: style for the text */
+.video-box-card p {
+  margin-top: 10px;
+  font-weight: 600;
+}

@@ -1,9 +1,12 @@
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<footer class="bg-dark text-light pt-5 pb-4">
-  <div class="container">
+<div class="container-fluid">
+<footer class="bg-dark text-light pt-5 pb-4" style="padding: 0 20px 0 20px">
+
+
     <div class="row">
 
-      <!-- About -->
+      <!-- Shop -->
       <div class="col-md-3 col-6 mb-4">
         <h5 class="text-uppercase mb-3">Shop</h5>
         <ul class="list-unstyled small">
@@ -50,12 +53,13 @@
           <a href="#" class="text-light"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
+
     </div>
 
     <hr class="border-light">
 
     <div class="text-center small">
-      &copy; {{ now.year }} boAt Lifestyle. All Rights Reserved.
+      &copy; {% now "Y" %} boAt Lifestyle. All Rights Reserved.
     </div>
   </div>
 </footer>

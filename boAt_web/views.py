@@ -1,14 +1,9 @@
 from django.shortcuts import render , redirect
-from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, ProductForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
-
-
-
 
 
 def home(request):
@@ -42,16 +37,23 @@ def registerUser(request):
     contex = {'form' : form}
     return render(request, 'boAt/register.html', contex)
 
-
 def logoutUser(request):
     logout(request)
     return redirect('login')
-
-
-
 
 
 @login_required
 def profile_view(request):
     return render(request, 'boAt/profile.html', {'user': request.user})
 
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')  # Redirect to product listing or home
+    else:
+        form = ProductForm()
+    return render(request, 'boAt/add_product.html', {'form': form})

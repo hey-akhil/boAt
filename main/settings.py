@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'boAt_web'
+    'boAt_web',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +76,12 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'boat_database',
+        'USER' : 'postgres',
+        'PASSWORD' : '0000',
+        'HOST' : 'localhost',
+        'PORT' : '5432'
     }
 }
 
@@ -121,7 +126,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "public/static"),  # ✅ matches your folder structure
+    os.path.join(BASE_DIR, "public/static"),
 ]
 
 # Optional if using collectstatic
