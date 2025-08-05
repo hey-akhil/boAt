@@ -1,0 +1,54 @@
+{% extends 'static_pages/base.html' %}
+{% block start %}
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
+<link rel="stylesheet" href="{% static 'css/view_product.css' %}">
+<br>
+<div class="container-fluid">
+  <div class="bar d-flex justify-content-between flex-wrap mb-4 align-items-center">
+    <div class="category-tabs d-flex flex-wrap gap-3">
+      <button class="tab-button active" data-category="All">All Products</button>
+      <button class="tab-button" data-category="Earbuds">Earbuds</button>
+      <button class="tab-button" data-category="Smartwatch">Smartwatch</button>
+      <button class="tab-button" data-category="Speaker">Speaker</button>
+      <button class="tab-button" data-category="Neckband">Neckband</button>
+    </div>
+
+    <!-- Count Badge -->
+    <div class="category-tabs d-flex align-items-center">
+      <div class="tab-button count-badge">
+        [Filtered count: <span id="productCount">0</span>]
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="row" id="productGrid">
+    {% for data in product_data %}
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 product-item" data-title="{{ data.title }}">
+      <div class="product-card position-relative">
+        <span class="badge-custom">{{ data.badge }}</span>
+        <div class="product-image">
+          <a href="{% url 'product_detail' data.id %}">
+            <img src="{{ data.image.url }}" alt="Product">
+          </a>
+        </div>
+        <div class="below p-2 text-start">
+          <div class="playback-badge mb-1">{{ data.playback_badge }}</div>
+          <div class="d-flex align-items-center">
+            <span class="rating">⭐ {{ data.rating }}</span>
+          </div>
+          <div class="fw-bold mt-2">{{ data.title }}</div>
+          <div class="price">₹{{ data.price }} <span class="old-price">₹{{ data.old_price }}</span></div>
+          <div class="discount">{{ data.discount }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script src="{% static 'js/view_product.js' %}"></script>
+
+{% endblock %}

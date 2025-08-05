@@ -2,6 +2,7 @@
 {% load static %}
 {% block start %}
 <link rel="stylesheet" href="{% static 'css/add_product.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <div class="login-container">
   <div class="login-box row g-0">
     <!-- Left Side -->
@@ -31,6 +32,8 @@
           <div class="discount" id="previewDiscount">75% off</div>
         </div>
       </div>
+      <br><br>
+      <a href="{% url 'viewProduct' %}">View All Product</a>
     </div>
 
     <!-- Right Side -->
@@ -56,7 +59,7 @@
 
         <div class="mb-3">
           <label>Playback Time Label</label>
-          <input type="text" name="playback" class="form-control" oninput="updatePreview('playback', this.value)">
+          <input type="text" name="playback_badge" class="form-control" oninput="updatePreview('playback', this.value)">
         </div>
 
         <div class="mb-3">
@@ -84,5 +87,18 @@
     </div>
   </div>
 </div>
+
  <script src="{% static 'js/add_product.js' %}"></script>
+{% if messages %}
+  <script>
+    {% for message in messages %}
+      Swal.fire({
+        title: "{% if message.tags == 'success' %}Success!{% elif message.tags == 'error' %}Error!{% else %}Notice{% endif %}",
+        text: "{{ message }}",
+        icon: "{{ message.tags }}",
+        confirmButtonText: 'OK'
+      });
+    {% endfor %}
+  </script>
+{% endif %}
 {% endblock %}

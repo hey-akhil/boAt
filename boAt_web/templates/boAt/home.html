@@ -2,7 +2,41 @@
 {% block start %}
 {% include 'boAt/slider.html' %}
 
-{% include 'boAt/sale_is_live.html' %}
 
+<div class="container-fluid my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Sale <strong>Is Li<span class="red-underline">ve</span> </strong></h4>
+    <div class="d-flex align-items-center">
+      <h5 class="mb-0"><strong>See all</strong></h5>
+      <span class="ms-2" style="color: black;">
+        <i class="fa-solid fa-arrow-right fa-lg"></i>
+      </span>
+    </div>
+  </div>
+
+<div class="row" id="productGrid">
+  {% for details in data|slice:"37:43" %}
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4 product-item" data-title="{{ details.title }}">
+      <div class="product-card position-relative">
+        <span class="badge-custom">{{ details.badge }}</span>
+        <div class="product-image">
+            <a href="{% url 'product_detail' details.id %}">
+                <img src="{{ details.image.url }}" alt="Product">
+            </a>
+        </div>
+        <div class="below p-2 text-start">
+          <div class="playback-badge mb-1">{{ details.playback_badge }}</div>
+          <div class="d-flex align-items-center">
+            <span class="rating">⭐ {{ details.rating }}</span>
+          </div>
+          <div class="fw-bold mt-2">{{ details.title }}</div>
+          <div class="price">₹{{ details.price }} <span class="old-price">₹{{ details.old_price }}</span></div>
+          <div class="discount">{{ details.discount }}% off</div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% include 'boAt/sale_is_live.html' %}
 
 {% endblock %}
