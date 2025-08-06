@@ -4,74 +4,8 @@
 {% for msg in message%}
   <p>{{msg}}</p>
 {% endfor %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
 
-
-<style>
-/* Ensure full height page */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa; /* optional light background */
-}
-
-/* Outer wrapper to center login box with spacing */
-.login-container {
-  min-height: 65vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 15px 0px 15px 0px;
-}
-
-/* Main login box card */
-.login-box {
-  max-width: 900px;
-  width: 100%;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-/* Left side of login (image/info panel) */
-.login-left {
-  background-color: #f2f2f2;
-  padding: 40px;
-}
-
-/* Right side of login (form panel) */
-.login-right {
-  padding: 40px;
-}
-
-/* Reusable icon layout inside the left panel */
-.icon-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 12px;
-  text-align: center;
-}
-
-.icon-box img {
-  height: 24px;
-  margin-bottom: 0.5rem;
-}
-
-/* Optional utility class */
-.small-text {
-  font-size: 0.875rem;
-}
-
-.form-control {
-  border-radius: 8px;
-}
-
-.btn {
-  border-radius: 8px;
-}
-</style>
 <div class="login-container">
   <div class="login-box row g-0">
     <!-- Left Side -->

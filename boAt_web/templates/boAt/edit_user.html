@@ -1,0 +1,37 @@
+{% extends 'static_pages/base.html' %}
+{% block start %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="container-fluid">
+  <div class="dashboard-wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h4>Admin Panel</h4>
+      <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+      <a href="{% url 'manage_user' %}">Manage Users</a>
+      <a href="{% url 'manage_products' %}">Products</a>
+      <a href="#">Orders</a>
+      <a href="#">Settings</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content p-4">
+      <h2>Edit User</h2>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label>Username</label>
+          <input type="text" name="username" value="{{ user.username }}" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label>Email</label>
+          <input type="email" name="email" value="{{ user.email }}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

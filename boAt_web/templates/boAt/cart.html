@@ -1,0 +1,69 @@
+{% extends 'static_pages/base.html' %}
+{% load static %}
+{% load cart_extras %}
+{% block start %}
+
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+<div class="cart-container">
+  <div class="cart-box row g-0">
+    <!-- Cart Items -->
+    <div class="col-md-7 cart-left">
+      <h5 class="mb-4">Your Cart</h5>
+
+      {% for item in cart_items %}
+      <div class="cart-item">
+        <img src="{{ item.product.image.url }}" alt="Product Image">
+        <div class="item-info">
+          <h6>{{ item.product.title }}</h6>
+          <p class="text-muted mb-1">₹{{ item.product.price }}</p>
+
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'decrease_quantity' item.id %}" class="btn btn-sm btn-outline-secondary">-</a>
+            <input style="width: 60px;" type="text" class="form-control form-control-sm quantity-input" value="{{ item.quantity }}" readonly>
+            <a href="{% url 'increase_quantity' item.id %}" class="btn btn-sm btn-outline-secondary">+</a>
+        </div>
+
+        </div>
+        <div>
+          <strong>₹{{ item.quantity|multiply:item.product.price }}</strong>
+        </div>
+
+      </div>
+      {% empty %}
+      <p class="text-muted">Your cart is empty.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Summary -->
+    <div class="col-md-5 cart-right">
+      <h5 class="mb-4">Order Summary</h5>
+
+      <div class="total-section">
+        <div>
+          <span>Subtotal</span>
+          <span>₹{{ subtotal }}</span>
+        </div>
+        <div>
+          <span>Tax (18%)</span>
+          <span>₹{{ tax }}</span>
+        </div>
+        <div>
+          <span>Shipping</span>
+          <span>₹{{ shipping }}</span>
+        </div>
+        <hr>
+        <div class="grand-total">
+          <span>Total</span>
+          <span>₹{{ total }}</span>
+        </div>
+      </div>
+
+      <form action="" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Proceed to Checkout</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

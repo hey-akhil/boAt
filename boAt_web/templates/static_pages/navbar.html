@@ -47,14 +47,15 @@
           </li>
 
           {% if request.user.is_superuser or request.user.is_staff %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'manage_user' %}">Manage Users</a></li>
-              <li><a class="dropdown-item" href="{% url 'manage_products' %}">Manage Product</a></li>
-            </ul>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin</a></li>
+<!--          <li class="nav-item dropdown">-->
+<!--            <a class="nav-link dropdown-toggle" href="#" role="button"-->
+<!--               data-bs-toggle="dropdown" aria-expanded="false">Admin</a>-->
+<!--            <ul class="dropdown-menu">-->
+<!--              <li><a class="dropdown-item" href="{% url 'manage_user' %}">Manage Users</a></li>-->
+<!--              <li><a class="dropdown-item" href="{% url 'manage_products' %}">Manage Product</a></li>-->
+<!--            </ul>-->
+<!--          </li>-->
           {% endif %}
         </ul>
       </div>
@@ -86,7 +87,7 @@
         {% endif %}
 
         <!-- Cart -->
-        <a href="#" class="text-dark" aria-label="Cart">
+        <a href="{% url 'cart' %}" class="text-dark" aria-label="Cart">
           <i class="fa-solid fa-cart-shopping fs-5"></i>
         </a>
       </div>

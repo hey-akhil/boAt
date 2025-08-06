@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
 <head>
     <title>boAt Airdopes Prime 701 ANC</title>
@@ -65,7 +64,7 @@
             </div>
 
             <div class="d-flex gap-3 mb-4">
-                <button class="btn btn-outline-dark">Add to Cart</button>
+                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-dark">Add to Cart</a>
                 <button class="btn btn-success">Buy Now</button>
             </div>
         </div>

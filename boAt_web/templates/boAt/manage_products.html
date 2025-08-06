@@ -2,23 +2,34 @@
 {% load static %}
 {% block start %}
 <link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
 
-<body class="p-4">
-  <div class="container-fluid">
-      <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
-          <h2 class="mb-0">Manage Products</h2>
-          <a href="{% url 'add_product' %}" class="btn btn-success">Add Product</a>
-      </div>
+<div class="container-fluid">
+  <div class="dashboard-wrapper">
+    <div class="sidebar">
+      <h4>Admin Panel</h4>
+      <a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a>
+      <a href="{% url 'manage_user' %}">Manage Users</a>
+      <a href="{% url 'manage_products' %}">Products</a>
+      <a href="#">Orders</a>
+      <a href="#">Settings</a>
+    </div>
+
+  <!-- Main Content -->
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
 
     <!-- Filter Buttons -->
-    <div class="d-flex flex-wrap gap-3 mb-4 category-tabs">
+    <div class="d-flex flex-wrap gap-3  category-tabs">
       <button class="tab-button active" data-category="all">All Deals</button>
       <button class="tab-button" data-category="earbuds">True Wireless Earbuds</button>
       <button class="tab-button" data-category="smartwatch">Smartwatches</button>
-      <button class="tab-button" data-category="speaker">Speakers And Soundbars</button>
-      <button class="tab-button" data-category="neckband">Neckbands And Headphones</button>
+      <button class="tab-button" data-category="speaker">Speakers & Soundbars</button>
+      <button class="tab-button" data-category="neckband">Neckbands & Headphones</button>
+      <button class="tab-button" data-category="neckband"><a href="{% url 'add_product' %}" class="btn btn-success">Add Product</a></button>
     </div>
 
+</div>
     <!-- Product Table -->
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -67,19 +78,22 @@
       </tbody>
     </table>
   </div>
-  <script src="{% static 'js/view_product2.js' %}"></script>
+</div>
+</div>
+<!-- Scripts -->
+<script src="{% static 'js/view_product2.js' %}"></script>
 
-  {% if messages %}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-      {% for message in messages %}
-      Swal.fire({
-        icon: 'success',
-        title: '{{ message }}',
-        showConfirmButton: false,
-        timer: 2000
-      });
-      {% endfor %}
-    </script>
-  {% endif %}
+{% if messages %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  {% for message in messages %}
+  Swal.fire({
+    icon: 'success',
+    title: '{{ message }}',
+    showConfirmButton: false,
+    timer: 2000
+  });
+  {% endfor %}
+</script>
+{% endif %}
 {% endblock %}
