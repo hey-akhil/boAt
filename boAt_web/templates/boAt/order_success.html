@@ -1,0 +1,14 @@
+{% extends 'static_pages/base.html' %}
+{% load static %}
+{% block start %}
+<link rel="stylesheet" href="{% static 'css/order_success.css' %}">
+
+<div class="WWE container-fluid d-flex justify-content-center mb-5 mt-5">
+    <div class="success-container">
+      <div class="success-icon">✅</div>
+      <div class="success-title">Thank You!</div>
+      <div class="success-message">Your order has been placed successfully 🎉</div>
+      <a href="{% url 'home' %}" class="home-btn">Return to Home</a>
+    </div>
+</div>
+{% endblock %}

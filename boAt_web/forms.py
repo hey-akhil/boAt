@@ -22,3 +22,9 @@ class ProductForm(forms.ModelForm):
             'old_price': forms.NumberInput(attrs={'class': 'form-control'}),
             'discount': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+
+class CheckoutForm(forms.Form):
+    full_name = forms.CharField(max_length=100)
+    address = forms.CharField(widget=forms.Textarea)
+    phone = forms.CharField(max_length=15)

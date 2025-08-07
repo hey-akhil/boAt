@@ -1,0 +1,61 @@
+  body {
+    background-color: #f5f7fa;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .orders-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  .orders-container h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #222;
+  }
+
+  .order-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    padding: 20px 30px;
+    margin-bottom: 25px;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+
+  .order-header span {
+    font-weight: 500;
+    color: #555;
+  }
+
+  .order-status {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    background-color: #e0f3ff;
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .order-total {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .no-orders {
+    text-align: center;
+    color: #777;
+    padding: 50px;
+    font-size: 18px;
+  }

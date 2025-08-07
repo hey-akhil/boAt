@@ -1,0 +1,32 @@
+{% extends 'static_pages/base.html' %}
+{% load static %}
+{% block start %}
+<link rel="stylesheet" href="{% static 'css/my_order.css' %}">
+<div class="container-fluid">
+  <div class="orders-container">
+   <div class="head d-flex justify-content-between mb-4" style="height: 35px;">
+      <h2>My Orders</h2>
+      <a href="{% url 'profile' %}" class="btn btn-info">Back</a>
+    </div>
+    {% if orders %}
+      {% for order in orders %}
+        <div class="order-card">
+          <div class="order-header">
+            <span>Order #{{ order.id }} — {{ order.created_at|date:"M d, Y" }}</span>
+            <span class="order-status">{{ order.status|title }}</span>
+          </div>
+
+          <div class="order-body">
+            <p><strong>Shipping To:</strong> <br>Name &nbsp; &nbsp; &nbsp;: {{ order.full_name }} <br>Address &nbsp;: {{ order.address }}</p>
+            <p class="order-total">Total: ₹{{ order.total }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-orders">
+        <p>You haven’t placed any orders yet.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

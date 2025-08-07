@@ -1,0 +1,180 @@
+{% extends 'static_pages/base.html' %}
+
+{% block start %}
+<style>
+  body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .checkout-wrapper {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .checkout-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    flex: 1 1 55%;
+    min-width: 320px;
+  }
+
+  .order-summary {
+    flex: 1 1 35%;
+    min-width: 280px;
+  }
+
+  h2 {
+    margin-bottom: 25px;
+    color: #222;
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .summary-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .summary-box h4 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .summary-item.total {
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #000;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #ff4c3b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-submit:hover {
+    background-color: #e84133;
+  }
+
+  @media (max-width: 768px) {
+    .checkout-wrapper {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="checkout-wrapper">
+
+  <!-- Left: Checkout Form -->
+  <div class="checkout-card">
+    <h2>Checkout</h2>
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="full_name">Full Name</label>
+        <input type="text" name="full_name" id="full_name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Shipping Address</label>
+        <textarea name="address" id="address" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" name="phone" id="phone" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Place Order</button>
+    </form>
+  </div>
+
+  <!-- Right: Order Summary -->
+  <div class="order-summary">
+    <div class="summary-box">
+      <h4>Order Summary</h4>
+      <div class="summary-item">
+        <span>Subtotal:</span>
+        <span>₹{{ subtotal }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Tax (18%):</span>
+        <span>₹{{ tax }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Shipping:</span>
+        <span>₹{{ shipping }}</span>
+      </div>
+      <hr>
+      <div class="summary-item total">
+        <span>Total:</span>
+        <span>₹{{ total }}</span>
+      </div>
+      <hr>
+     <p>Scheduled delivery <strong>Tomorrow <br>7 am - 9 pm.</strong>Order within <span style="color: green">2 hrs 42 mins.</span>
+       <br><i class="fa-solid fa-location-dot"></i><a href="#"> Deliver to Lucknow - 226017</a></p>
+      <br>
+      <p>Ships from: boAt Nirvana Pvt. Ltd.</p>
+      <p>Sold by: Nirvana Technology </p>
+      <p>Packaging: Ships in product packaging</p>
+      <br>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

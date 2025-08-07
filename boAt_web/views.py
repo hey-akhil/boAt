@@ -1,129 +1,49 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CustomUserCreationForm, ProductForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.db.models import Q
 from django.contrib.auth.models import User
-
-
-
-
-#Add to Cart
-def add_to_cart(request, product_id):
-    product = get_object_or_404(AddProduct, id=product_id)
-    cart, created = Cart.objects.get_or_create(user=request.user)
-
-    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
-
-    return redirect('cart')
-
-def increase_quantity(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-    item.quantity += 1
-    item.save()
-    return redirect('cart')
-
-
-def decrease_quantity(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-    if item.quantity > 1:
-        item.quantity -= 1
-        item.save()
-    else:
-        item.delete()
-    return redirect('cart')
-
-
-def show_cart(request):
-    cart = Cart.objects.filter(user=request.user).first()
-    if not cart:
-        cart_items = []
-        total = 0
-    else:
-        cart_items = cart.items.all()
-        total = cart.total_price()
-    return render(request, 'boAt/cart.html', {'cart_items': cart_items, 'total': total})
-
-def remove_cart_item(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
-    item.delete()
-    return redirect('show_cart')
-
-
-
-def remove_from_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    if str(product_id) in cart:
-        del cart[str(product_id)]
-        request.session['cart'] = cart
-        messages.success(request, "Item removed from cart.")
-    return redirect('cart')
-
-
-
-def place_order(request):
-    cart = request.session.get('cart', {})
-    if not cart:
-        messages.error(request, "Cart is empty.")
-        return redirect('cart')
-
-    products = AddProduct.objects.filter(id__in=cart.keys())
-    total = sum(product.price * cart[str(product.id)] for product in products)
-
-    order = Order.objects.create(user=request.user, total_amount=total)
-
-    for product in products:
-        quantity = cart[str(product.id)]
-        OrderItem.objects.create(order=order, product=product, quantity=quantity, price=product.price)
-
-    # Clear cart
-    request.session['cart'] = {}
-    messages.success(request, "Order placed successfully.")
-    return redirect('order_success')
-
-def order_success(request):
-    return render(request, 'order_success.html')
+from django.http import JsonResponse
+from decimal import Decimal
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 
 
 
+@staff_member_required
+def admin_orders_view(request):
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, 'boAt/admin_manage_orders.html', {'orders': orders})
 
+def update_status(request, order_id):
+    if request.method == 'POST':
+        order = get_object_or_404(Order, id=order_id)
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES).keys():
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order #{order.id} status updated to '{new_status.title()}'.")
+        else:
+            messages.error(request, "Invalid status selected.")
+    return redirect('admin_orders')
 
-
-def view_user(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    return render(request, 'boAt/view_user.html', {'user': user})
-
-
-
-
-
-#Product Cart
-def cart_view(request):
-    cart_items = CartItem.objects.filter(cart__user=request.user)
-
-    subtotal = sum(item.total_price() for item in cart_items)
-    tax = round(subtotal * 0.18, 2)  # 18% GST
-    shipping = 50 if subtotal < 1000 else 0
-    total = subtotal + tax + shipping
-
-    context = {
-        'cart_items': cart_items,
-        'subtotal': subtotal,
-        'tax': tax,
-        'shipping': shipping,
-        'total': total
-    }
-    return render(request, 'boAt/cart.html', context)
-
-
-
+# @staff_member_required
+# def admin_order_detail_view(request, order_id):
+#     order = get_object_or_404(Order, pk=order_id)
+#
+#     if request.method == 'POST':
+#         new_status = request.POST.get('status')
+#         if new_status in dict(Order.STATUS_CHOICES):
+#             order.status = new_status
+#             order.save()
+#             return redirect('admin_order_detail', order_id=order_id)
+#
+#     return render(request, 'admin_order_detail.html', {'order': order})
+#
 
 # -----------------------------------User Side----------------------------------------
 #Regustartions
@@ -177,14 +97,6 @@ def logoutUser(request):
 
 
 
-# --------------------------------- Admin Dashboard ----------------------------------
-def admin_dashboard(request):
-    users = User.objects.all()
-    products = AddProduct.objects.all()
-    context = {'users' : users, 'products':products}
-    return render(request, 'boAt/admin_dashboard.html', context)
-
-
 # ------------------------------------Manage user-------------------------------------
 @login_required
 def profile_view(request):
@@ -225,8 +137,6 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect('manage_user')
-
-
 
 # ---------------------------------Manage Products -----------------------------------
 
@@ -303,10 +213,189 @@ def delete_product(request, pk):
     return redirect('manage_products')
 
 
+# ---------------------------------Manage User Carts  -----------------------------------
+
+@login_required
+def cart_view(request):
+    try:
+        cart = Cart.objects.get(user=request.user)
+        cart_items = CartItem.objects.filter(cart=cart)
+    except Cart.DoesNotExist:
+        cart_items = []
+
+    # Backend calculations
+    subtotal = sum(item.quantity * item.product.price for item in cart_items)
+    tax = round(subtotal * 0.18, 2)
+    shipping = 50 if subtotal < 1000 else 0
+    total = round(subtotal + tax + shipping, 2)
+
+    context = {
+        'cart_items': cart_items,
+        'subtotal': subtotal,
+        'tax': tax,
+        'shipping': shipping,
+        'total': total,
+    }
+    return render(request, 'boAt/cart.html', context)
+
+
+#Add to Cart
+def add_to_cart(request, product_id):
+    product = get_object_or_404(AddProduct, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    return redirect('cart')
+
+
+def increase_quantity(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    item.quantity += 1
+    item.save()
+
+    subtotal = sum(i.total_price() for i in CartItem.objects.filter(cart__user=request.user))
+    tax = round(subtotal * 0.18, 2)
+    shipping = 50 if subtotal < 1000 else 0
+    total = subtotal + tax + shipping
+
+    return JsonResponse({
+        'quantity': item.quantity,
+        'item_total': item.total_price(),
+        'subtotal': subtotal,
+        'tax': tax,
+        'shipping': shipping,
+        'total': total,
+    })
+
+def decrease_quantity(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    removed = False
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save()
+    else:
+        item.delete()
+        removed = True
+
+    subtotal = sum(i.total_price() for i in CartItem.objects.filter(cart__user=request.user))
+    tax = round(subtotal * 0.18, 2)
+    shipping = 50 if subtotal < 1000 else 0
+    total = subtotal + tax + shipping
+
+    return JsonResponse({
+        'removed': removed,
+        'item_id': item_id,
+        'quantity': item.quantity if not removed else 0,
+        'item_total': item.total_price() if not removed else 0,
+        'subtotal': subtotal,
+        'tax': tax,
+        'shipping': shipping,
+        'total': total,
+        'removed_item_id': item_id if removed else None,
+    })
+
+@login_required
+def checkout_view(request):
+    cart = Cart.objects.filter(user=request.user).first()
+
+    if not cart or not cart.items.exists():
+        messages.warning(request, "Your cart is empty.")
+        return redirect('cart')  # Adjust to your cart URL name
+
+    if request.method == "POST":
+        full_name = request.POST.get("full_name")
+        address = request.POST.get("address")
+        phone = request.POST.get("phone")
+
+        cart_items = cart.items.all()
+        subtotal = sum(item.total_price() for item in cart_items)
+        tax = subtotal * Decimal('0.18')
+        shipping = Decimal('50.00')  # Flat rate shipping
+        total = subtotal + tax + shipping
+
+        order = Order.objects.create(
+            user=request.user,
+            first_name=full_name,
+            address=address,
+            phone=phone,
+            subtotal=subtotal,
+            tax=tax,
+            shipping=shipping,
+            total=total
+        )
+
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                price=item.product.price,
+                quantity=item.quantity
+            )
+
+        cart.items.all().delete()
+
+        messages.success(request, "Your order has been placed successfully.")
+        return redirect('order_success')  # You can make this URL
+
+    else:
+        cart_items = cart.items.all()
+        subtotal = sum(item.total_price() for item in cart_items)
+        tax = subtotal * Decimal('0.18')
+        shipping = Decimal('50.00')
+        total = subtotal + tax + shipping
+
+        context = {
+            'cart_items': cart_items,
+            'subtotal': subtotal,
+            'tax': tax,
+            'shipping': shipping,
+            'total': total
+        }
+        return render(request, 'boAt/checkout.html', context)
+
+
+def order_success(request):
+    return render(request, 'boAt/order_success.html')
+
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'boAt/my_orders.html', {'orders': orders})
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# ---------------------------------------------------------------------------------
+# --------------------------------- Admin Dashboard -------------------------------
+# ---------------------------------------------------------------------------------
+
+def admin_dashboard(request):
+    users = User.objects.all()
+    products = AddProduct.objects.all()
+    orders = Order.objects.all()
+    context = {'users' : users, 'products':products, 'orders' : orders}
+    return render(request, 'boAt/admin_dashboard.html', context)
+
+#Users list admin
+def view_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    return render(request, 'boAt/view_user.html', {'user': user})
 
 
 
