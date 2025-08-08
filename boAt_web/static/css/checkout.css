@@ -1,0 +1,113 @@
+body {
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .checkout-wrapper {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .checkout-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    flex: 1 1 55%;
+    min-width: 320px;
+  }
+
+  .order-summary {
+    flex: 1 1 35%;
+    min-width: 280px;
+  }
+
+  h2 {
+    margin-bottom: 25px;
+    color: #222;
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .summary-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .summary-box h4 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .summary-item.total {
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #000;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: #ff4c3b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: background-color 0.3s;
+  }
+
+  .btn-submit:hover {
+    background-color: #e84133;
+  }
+
+  @media (max-width: 768px) {
+    .checkout-wrapper {
+      flex-direction: column;
+    }
+  }

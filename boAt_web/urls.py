@@ -31,10 +31,11 @@ urlpatterns = [
     path('order-success/', views.order_success, name='order_success'),
     path('checkout-cart/', views.checkout_view, name='checkout'),
     path('my-orders/', views.my_orders, name='my_orders'),
-    path('orders/', views.admin_orders_view, name='admin_orders'),
+    path('manage-orders/', views.admin_orders_view, name='admin_orders'),
     # path('admin/orders/<int:order_id>/', views.admin_order_detail_view, name='admin_order_detail'),
     path('update-status/<int:order_id>/', views.update_status, name='update_status'),
-
+    path('pending-orders/', views.PandingOrderStatusViewPage, name='pending_orders'),
+    path('edit-profile/', views.edit_profile, name='edit_profile'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

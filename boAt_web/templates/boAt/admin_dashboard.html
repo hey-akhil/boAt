@@ -8,47 +8,43 @@
 <div class="container-fluid">
   <div class="dashboard-wrapper">
     <!-- Sidebar -->
-    <div class="sidebar">
-      <h4>Admin Panel</h4>
-      <a href="{% url 'admin_dashboard' %}">Dashboard</a>
-      <a href="{% url 'manage_user' %}">Manage Users</a>
-      <a href="{% url 'manage_products' %}">Products</a>
-      <a href="{% url 'admin_orders' %}">Manage Orders</a>
-      <a href="#">Settings</a>
-    </div>
-
+   {% include 'boAt/sidebar.html' %}
     <!-- Main Content -->
     <div class="main-content">
       <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
         <h2 class="mb-0">Welcome, Admin</h2>
-<!--        <a href="{% url 'add_user' %}" class="btn btn-success">Add User</a>-->
       </div>
 
       <div class="row g-4">
         <div class="col-md-4">
-          <div class="card text-white bg-primary p-3">
-            <h5>Total Users</h5>
-            <h3>
-               {{users.count}}
-            </h3>
+            <div class="card text-white bg-primary p-3">
+              <a class="text-decoration-none text-white" href="{% url 'manage_user' %}">
+                <h5>Total Users</h5>
+                  <h3>
+                 {{users.count}}
+                  </h3>
+              </a>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card text-white bg-success p-3">
-            <h5>Total Products</h5>
-            <h3>{{products.count}}</h3>
+            <div class="card text-white bg-success p-3">
+              <a class="text-decoration-none text-white" href="{% url 'manage_products' %}">
+                <h5>Total Products</h5>
+                <h3>{{products.count}}</h3>
+              </a>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card text-white bg-danger p-3">
-            <h5>Pending Orders</h5>
-            <h3>-</h3>
-          </div>
+            <div class="card text-white bg-danger p-3">
+              <a class="text-decoration-none text-white" href="{% url 'pending_orders' %}">
+              <h5>Pending Orders</h5>
+              <h3>{{pending_count}}</h3>
+                </a>
+            </div>
         </div>
       </div>
-
       <div class="row g-4 mt-4">
         <div class="col-md-6">
           <div class="card p-3">
@@ -56,12 +52,10 @@
             {% for user in users|slice:":3" %}
             <ul class="list-group list-group-flush">
               <li class="list-group-item">{{user.username | capfirst}}</li>
-
             </ul>
             {% endfor %}
           </div>
         </div>
-
         <div class="col-md-6">
           <div class="card p-3">
             <h5>System Info</h5>

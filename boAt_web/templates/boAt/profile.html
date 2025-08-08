@@ -2,8 +2,12 @@
 {% load static %}
 {% block start %}
 
-<!-- User Profile Section -->
-<section class="py-5" style="background-color: #f7f9fb; font-family: 'Metropolis', sans-serif;">
+<!-- Include Bootstrap JS & jQuery (for modal) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+<section class="py-5" style="background-color: #f7f9fb;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
@@ -12,7 +16,7 @@
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-body p-4 d-flex flex-column flex-md-row align-items-center gap-4">
 
-            <!-- Avatar Icon -->
+            <!-- Avatar -->
             <div class="text-center">
               <div class="rounded-circle bg-light d-flex justify-content-center align-items-center" style="width: 100px; height: 100px;">
                 <i class="fa-solid fa-user fs-1 text-secondary"></i>
@@ -20,20 +24,47 @@
             </div>
 
             <!-- User Info -->
-            <div class="flex-grow-1 text-center text-md-start">
-              <h4 class="fw-bold mb-1 text-dark">{{ user.username|capfirst }}</h4>
+            <div class="flex-grow-1 text-center text-md-start mb-4">
+              <h4 class="fw-bold mb-1 text-dark">
+                {% if user.first_name or user.last_name %}
+                  {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                  boAt User
+                {% endif %}
+              </h4>
               <p class="text-muted mb-2">{{ user.email }}</p>
+              <p class="text-muted mb-2"><strong>Role :</strong>
+              {%if user.is_staff%}
+                Admin
+                {% else %}
+                User
+                {% endif %}
+              </p>
+              <p class="text-muted mb-2"><i class="fa-solid fa-location-arrow"></i> {{ user.last_login }}</p>
+
 
               <div class="d-flex justify-content-center justify-content-md-start gap-2 mt-2">
-                <a href="" class="btn btn-outline-dark btn-sm rounded-pill">Edit Profile</a>
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm rounded-pill">Logout</a>
               </div>
             </div>
-
+            <div class="flex-grow-1 text-center text-md-start mt-4">
+              <h4 class="fw-bold mb-1 text-dark">
+                <i class="fa-solid fa-user-pen"></i>
+                <a href="#" class="btn btn-outline-dark btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</a>
+              </h4>
+              <p class="text-muted mb-2"><span style="display: inline-block; width: 90px;"><strong>Name</strong></span> {% if user.first_name or user.last_name %}
+                  {{ user.first_name }} {{ user.last_name }}
+                {% else %}
+                  boAt User
+                {% endif %}</p>
+              <p class="text-muted mb-2"><span style="display: inline-block; width: 90px;"> <strong>Username</strong></span> {{ user.username }}</p>
+              <p class="text-muted mb-2"><span style="display: inline-block; width: 90px;"><strong>Email</strong></span> {{ user.email }}</p>
+              <p class="text-muted mb-2"><span style="display: inline-block; width: 90px;"><strong>Joined Date</strong></span> {{ user.date_joined }}</p>
+            </div>
           </div>
         </div>
 
-        <!-- Optional: Order Summary, Wishlist, etc. -->
+        <!-- Optional: Account Summary -->
         <div class="card mt-4 border-0 shadow-sm rounded-4">
           <div class="card-body">
             <h5 class="fw-semibold mb-3">Account Summary</h5>
@@ -58,4 +89,42 @@
     </div>
   </div>
 </section>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" action="{% url 'edit_profile' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" value="{{ user.username }}" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ user.email }}" disabled>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark rounded-pill">Save Changes</button>
+          <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

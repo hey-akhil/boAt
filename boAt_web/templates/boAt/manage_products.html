@@ -6,14 +6,7 @@
 
 <div class="container-fluid">
   <div class="dashboard-wrapper">
-    <div class="sidebar">
-      <h4>Admin Panel</h4>
-      <a href="{% url 'admin_dashboard' %}" class="active">Dashboard</a>
-      <a href="{% url 'manage_user' %}">Manage Users</a>
-      <a href="{% url 'manage_products' %}">Products</a>
-      <a href="{% url 'admin_orders' %}">Manage Orders</a>
-      <a href="#">Settings</a>
-    </div>
+    {% include 'boAt/sidebar.html' %}
 
   <!-- Main Content -->
     <div class="main-content">
@@ -34,7 +27,7 @@
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
         <tr>
-          <th>#</th>
+          <th>Product ID</th>
           <th>Image</th>
           <th>Title</th>
           <th>Badge</th>
@@ -49,7 +42,7 @@
       <tbody id="productTable">
         {% for product in products %}
         <tr class="product-item" data-title="{{ product.title|lower }}">
-          <td>{{ forloop.counter }}</td>
+          <td class="text-center">#{{ forloop.counter }}</td>
           <td>
             {% if product.image %}
               <img src="{{ product.image.url }}" class="img-thumbnail" style="width: 100px; height: 100px;">
@@ -77,6 +70,36 @@
         {% endfor %}
       </tbody>
     </table>
+    <!-- Pagination -->
+<!--      {% if products.has_other_pages %}-->
+<!--      <nav aria-label="Page navigation">-->
+<!--        <ul class="pagination justify-content-center mt-4">-->
+<!--          {% if products.has_previous %}-->
+<!--          <li class="page-item">-->
+<!--            <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>-->
+<!--          </li>-->
+<!--          {% else %}-->
+<!--          <li class="page-item disabled"><span class="page-link">Previous</span></li>-->
+<!--          {% endif %}-->
+
+<!--          {% for num in products.paginator.page_range %}-->
+<!--            {% if products.number == num %}-->
+<!--              <li class="page-item active"><span class="page-link">{{ num }}</span></li>-->
+<!--            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}-->
+<!--              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>-->
+<!--            {% endif %}-->
+<!--          {% endfor %}-->
+
+<!--          {% if products.has_next %}-->
+<!--          <li class="page-item">-->
+<!--            <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>-->
+<!--          </li>-->
+<!--          {% else %}-->
+<!--          <li class="page-item disabled"><span class="page-link">Next</span></li>-->
+<!--          {% endif %}-->
+<!--        </ul>-->
+<!--      </nav>-->
+<!--      {% endif %}-->
   </div>
 </div>
 </div>

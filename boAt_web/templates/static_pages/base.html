@@ -9,19 +9,18 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-      {{ message }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-  {% endfor %}
-{% endif %}
-
     {% include 'static_pages/navbar.html' %}
+<!--        {% if messages %}-->
+<!--          {% for message in messages %}-->
+<!--            <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-center mt-5" style="margin : 0 80px;" role="alert">-->
+<!--              {{ message }}-->
+<!--              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--            </div>  -->
+<!--          {% endfor %}-->
+<!--        {% endif %}-->
     {% block start %}
-
 
     {% endblock %}
     {% include 'static_pages/footer.html' %}

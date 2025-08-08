@@ -5,17 +5,9 @@
 <link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
 <link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
 
-<div class="container-fluid">
-  <div class="dashboard-wrapper">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h4>Admin Panel</h4>
-      <a href="{% url 'admin_dashboard' %}">Dashboard</a>
-      <a href="{% url 'manage_user' %}">Manage Users</a>
-      <a href="{% url 'manage_products' %}">Products</a>
-      <a href="{% url 'admin_orders' %}">Manage Orders</a>
-      <a href="#">Settings</a>
-    </div>
+ <div class="container-fluid">
+  <div class="dashboard-wrapper d-flex">
+    {% include 'boAt/sidebar.html' %}
 
     <!-- Main Content -->
     <div class="main-content p-4">

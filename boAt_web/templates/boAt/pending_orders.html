@@ -1,0 +1,49 @@
+{% extends 'static_pages/base.html' %}
+{% load static %}
+
+{% block start %}
+<link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="container-fluid">
+  <div class="dashboard-wrapper">
+    {% include 'boAt/sidebar.html' %}
+
+    <div class="main-content p-4">
+      <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+        <h2 class="mb-0">Pending Orders</h2>
+        <a href="{% url 'admin_orders' %}" class="btn btn-success">Manage Orders</a>
+      </div>
+
+      <p>Total Pending Orders: <strong>{{ pending_count }}</strong></p>
+
+      <table class="table table-bordered table-hover table-striped align-middle text-center">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Order ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            {% if order.status == 'pending' %}
+              <tr>
+                <th scope="row">#{{ order.id }}</th>
+                <td>{{ order.user.username }}</td>
+                <td>{{ order.status }}</td>
+                <td>-</td>
+              </tr>
+            {% endif %}
+          {% empty %}
+            <tr>
+              <td colspan="4">No pending orders found.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

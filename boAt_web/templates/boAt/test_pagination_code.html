@@ -1,0 +1,137 @@
+<!--Manage Product.html Code-->
+
+{% extends 'static_pages/base.html' %}
+{% load static %}
+{% block start %}
+<link rel="stylesheet" href="{% static 'css/sale_is_live.css' %}">
+<link rel="stylesheet" href="{% static 'css/admin_dashboard.css' %}">
+
+<div class="container-fluid">
+  <div class="dashboard-wrapper">
+    {% include 'boAt/sidebar.html' %}
+
+  <!-- Main Content -->
+    <div class="main-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <!-- Filter Buttons -->
+    <div class="d-flex flex-wrap gap-3  category-tabs">
+      <button class="tab-button active" data-category="all">All Deals</button>
+      <button class="tab-button" data-category="earbuds">True Wireless Earbuds</button>
+      <button class="tab-button" data-category="smartwatch">Smartwatches</button>
+      <button class="tab-button" data-category="speaker">Speakers & Soundbars</button>
+      <button class="tab-button" data-category="neckband">Neckbands & Headphones</button>
+      <button class="tab-button" data-category="neckband"><a href="{% url 'add_product' %}" class="btn btn-success">Add Product</a></button>
+    </div>
+
+</div>
+    <!-- Product Table -->
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Product ID</th>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Badge</th>
+          <th>Playback</th>
+          <th>Rating</th>
+          <th>Price</th>
+          <th>Old Price</th>
+          <th>Discount</th>
+          <th colspan="2" class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productTable">
+        {% for product in products %}
+        <tr class="product-item" data-title="{{ product.title|lower }}">
+          <td class="text-center">#{{ product.id }}</td>
+          <td>
+            {% if product.image %}
+              <img src="{{ product.image.url }}" class="img-thumbnail" style="width: 100px; height: 100px;">
+            {% endif %}
+          </td>
+          <td>{{ product.title }}</td>
+          <td>{{ product.badge }}</td>
+          <td>{{ product.playback_badge }}</td>
+          <td>{{ product.rating }}</td>
+          <td>₹{{ product.price }}</td>
+          <td>₹{{ product.old_price }}</td>
+          <td>{{ product.discount }}</td>
+          <td>
+            <a href="{% url 'edit_product' product.pk %}" class="btn btn-sm btn-primary">Edit</a>
+          </td>
+          <td>
+            <a href="{% url 'delete_product' product.pk %}" class="btn btn-sm btn-danger"
+               onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="10" class="text-center">No products found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- Pagination -->
+      {% if products.has_other_pages %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
+          {% if products.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link">Previous</span></li>
+          {% endif %}
+
+          {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if products.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link">Next</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+  </div>
+</div>
+</div>
+<!-- Scripts -->
+<script src="{% static 'js/view_product2.js' %}"></script>
+
+{% if messages %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  {% for message in messages %}
+  Swal.fire({
+    icon: 'success',
+    title: '{{ message }}',
+    showConfirmButton: false,
+    timer: 2000
+  });
+  {% endfor %}
+</script>
+{% endif %}
+{% endblock %}
+
+
+<!------------------------------------------------------------------------------------>
+<!--view code-->
+
+def manage_products(request):
+    product_list = AddProduct.objects.all().order_by('-id')
+    paginator = Paginator(product_list, 15)  # Show 10 products per page
+
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
+
+    return render(request, 'boAt/manage_products.html', {'products': products})

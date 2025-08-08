@@ -9,41 +9,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from decimal import Decimal
 from django.contrib.admin.views.decorators import staff_member_required
+from django.core.paginator import Paginator
 
-
-
-
-
-@staff_member_required
-def admin_orders_view(request):
-    orders = Order.objects.all().order_by('-created_at')
-    return render(request, 'boAt/admin_manage_orders.html', {'orders': orders})
-
-def update_status(request, order_id):
-    if request.method == 'POST':
-        order = get_object_or_404(Order, id=order_id)
-        new_status = request.POST.get('status')
-        if new_status in dict(Order.STATUS_CHOICES).keys():
-            order.status = new_status
-            order.save()
-            messages.success(request, f"Order #{order.id} status updated to '{new_status.title()}'.")
-        else:
-            messages.error(request, "Invalid status selected.")
-    return redirect('admin_orders')
-
-# @staff_member_required
-# def admin_order_detail_view(request, order_id):
-#     order = get_object_or_404(Order, pk=order_id)
-#
-#     if request.method == 'POST':
-#         new_status = request.POST.get('status')
-#         if new_status in dict(Order.STATUS_CHOICES):
-#             order.status = new_status
-#             order.save()
-#             return redirect('admin_order_detail', order_id=order_id)
-#
-#     return render(request, 'admin_order_detail.html', {'order': order})
-#
 
 # -----------------------------------User Side----------------------------------------
 #Regustartions
@@ -102,11 +69,13 @@ def logoutUser(request):
 def profile_view(request):
     return render(request, 'boAt/profile.html', {'user': request.user})
 
+@login_required
 def manage_user(request):
     form = User.objects.all()
     contex = {'form': form}
     return render(request, 'boAt/manage_user.html', contex)
 
+@staff_member_required
 #Add user
 def add_user(request):
     if request.method == 'POST':
@@ -122,6 +91,7 @@ def add_user(request):
     user_added = request.session.pop('user_added', False)
     return render(request, 'boAt/add_user.html', {'form': form, 'user_added': user_added})
 
+@login_required
 # Edit user
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -132,15 +102,28 @@ def edit_user(request, user_id):
         return redirect('manage_user')
     return render(request, 'boAt/edit_user.html', {'user': user})
 
+@staff_member_required
 # Delete user
 def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect('manage_user')
 
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        user.first_name = request.POST.get('first_name', '')
+        user.last_name = request.POST.get('last_name', '')
+        user.save()
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('profile')
+    return redirect('profile')
+
 # ---------------------------------Manage Products -----------------------------------
 
 #Add Products
+@staff_member_required
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -188,12 +171,20 @@ def product_detail(request, id):
     product = AddProduct.objects.get(id=id)
     return render(request, 'boAt/product_detail.html', {'product': product})
 
+
 #manage_products
+@staff_member_required
 def manage_products(request):
-    products = AddProduct.objects.all()
-    return render(request, 'boAt/manage_products.html', {'products': products})
+    product_list = AddProduct.objects.all().order_by('-id')
+    # paginator = Paginator(product_list, 15)  # Show 10 products per page
+    #
+    # page_number = request.GET.get('page')
+    # products = paginator.get_page(page_number)
+
+    return render(request, 'boAt/manage_products.html', {'products': product_list})
 
 #edit_product
+@staff_member_required
 def edit_product(request, pk):
     product = get_object_or_404(AddProduct, id=pk)
     if request.method == 'POST':
@@ -238,7 +229,6 @@ def cart_view(request):
     }
     return render(request, 'boAt/cart.html', context)
 
-
 #Add to Cart
 def add_to_cart(request, product_id):
     product = get_object_or_404(AddProduct, id=product_id)
@@ -250,7 +240,6 @@ def add_to_cart(request, product_id):
         cart_item.save()
 
     return redirect('cart')
-
 
 def increase_quantity(request, item_id):
     item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
@@ -367,20 +356,6 @@ def my_orders(request):
     return render(request, 'boAt/my_orders.html', {'orders': orders})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # ---------------------------------------------------------------------------------
 # --------------------------------- Admin Dashboard -------------------------------
 # ---------------------------------------------------------------------------------
@@ -389,7 +364,8 @@ def admin_dashboard(request):
     users = User.objects.all()
     products = AddProduct.objects.all()
     orders = Order.objects.all()
-    context = {'users' : users, 'products':products, 'orders' : orders}
+    pending_count = orders.filter(status="pending").count()
+    context = {'users' : users, 'products':products, 'orders' : orders, 'pending_count' : pending_count}
     return render(request, 'boAt/admin_dashboard.html', context)
 
 #Users list admin
@@ -397,8 +373,30 @@ def view_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     return render(request, 'boAt/view_user.html', {'user': user})
 
+@staff_member_required
+def admin_orders_view(request):
+    orders = Order.objects.all().order_by('-created_at')
+    return render(request, 'boAt/admin_manage_orders.html', {'orders': orders})
 
+#Updating Order status of order from Admin
+def update_status(request, order_id):
+    if request.method == 'POST':
+        order = get_object_or_404(Order, id=order_id)
+        new_status = request.POST.get('status')
+        if new_status in dict(Order.STATUS_CHOICES).keys():
+            order.status = new_status
+            order.save()
+            messages.success(request, f"Order #{order.id} status updated to '{new_status.title()}'.")
+        else:
+            messages.error(request, "Invalid status selected.")
+    return redirect('admin_orders')
 
-
-
+@staff_member_required
+#Panding Order Status View Page inside the admin
+def PandingOrderStatusViewPage(request):
+    users = User.objects.all()
+    orders = Order.objects.all()
+    pending_count = orders.filter(status="pending").count()
+    context = {'users': users, 'orders': orders, 'pending_count': pending_count}
+    return render(request,'boAt/pending_orders.html', context)
 
